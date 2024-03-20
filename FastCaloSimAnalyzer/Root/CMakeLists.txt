@@ -56,6 +56,8 @@ fcs_add_dependency(${FastCaloSimAnalyzer_LIB} ${AthenaStandalone_LIB})
 
 if(ENABLE_GPU)
 fcs_add_dependency(${FastCaloSimAnalyzer_LIB} ${FastCaloGpu_LIB})
+elseif(ENABLE_OMPGPU)
+fcs_add_dependency(${FastCaloSimAnalyzer_LIB} ${FastCaloGpu_LIB})
 endif()
 # Install library
 install(TARGETS ${FastCaloSimAnalyzer_LIB}

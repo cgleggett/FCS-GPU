@@ -47,6 +47,10 @@ if(ENABLE_GPU)
   set(FCS_CommonDefinitions ${FCS_CommonDefinitions} -DUSE_GPU )
 endif()
 
+if(ENABLE_OMPGPU)
+  set(FCS_CommonDefinitions ${FCS_CommonDefinitions} -DUSE_OMPGPU )
+endif()
+
 if(USE_KOKKOS)
   set(FCS_CommonDefinitions ${FCS_CommonDefinitions} -DUSE_KOKKOS )
 endif()
@@ -75,6 +79,10 @@ set(${FastCaloSimAnalyzer_LIB}_Includes
 )
 
 if(ENABLE_GPU)
+  set(${FastCaloGpu_LIB}_Includes
+  ${CMAKE_SOURCE_DIR}/FastCaloGpu
+)
+elseif(ENABLE_OMPGPU)
   set(${FastCaloGpu_LIB}_Includes
   ${CMAKE_SOURCE_DIR}/FastCaloGpu
 )

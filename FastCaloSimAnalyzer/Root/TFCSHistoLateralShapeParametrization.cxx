@@ -161,7 +161,7 @@ void TFCSHistoLateralShapeParametrization::Print( Option_t* option ) const {
   }  
 }
 
-#ifdef  USE_GPU
+#ifdef USE_GPU
 void TFCSHistoLateralShapeParametrization::LoadHistFuncs() {
 
  if (m_LdFH ){

@@ -6,6 +6,7 @@
 #include "CaloGpuGeneral_cu.h"
 #include "CaloGpuGeneral_sp.h"
 #include "CaloGpuGeneral_kk.h"
+#include "CaloGpuGeneral_omp.h"
 #include "CaloGpuGeneral_al.h"
 
 #include "Rand4Hits.h"
@@ -63,6 +64,8 @@ void *CaloGpuGeneral::Rand4Hits_init(long long maxhits, int maxbin,
   std::cout << "\n";
 #elif defined(USE_ALPAKA)
   std::cout << "using alpaka\n";
+#elif defined(USE_OMPGPU)
+  std::cout << "using OpenMP GPU\n";
 #else
   std::cout << "using CUDA\n";
 #endif
@@ -77,6 +80,8 @@ void CaloGpuGeneral::Rand4Hits_finish(void *rd4h) {
   CaloGpuGeneral_kk::Rand4Hits_finish(rd4h);
 #elif defined(USE_ALPAKA)
   CaloGpuGeneral_al::Rand4Hits_finish(rd4h);
+#elif defined(USE_OMPGPU)
+  CaloGpuGeneral_omp::Rand4Hits_finish(rd4h);
 #else
   CaloGpuGeneral_cu::Rand4Hits_finish(rd4h);
 #endif
@@ -109,6 +114,8 @@ void CaloGpuGeneral::simulate_hits_gr(Sim_Args &args) {
   CaloGpuGeneral_kk::simulate_hits_gr(args);
 #elif defined USE_ALPAKA
   CaloGpuGeneral_al::simulate_hits_gr(args);
+#elif defined USE_OMPGPU
+  CaloGpuGeneral_omp::simulate_hits_gr(args);
 #else
   CaloGpuGeneral_cu::simulate_hits_gr(args);
 #endif
@@ -128,6 +135,8 @@ void CaloGpuGeneral::load_hitsim_params(void *rd4h, HitParams *hp,
   CaloGpuGeneral_kk::load_hitsim_params(rd4h, hp, simbins, bins);
 #elif defined(USE_ALPAKA)
   CaloGpuGeneral_al::load_hitsim_params(rd4h, hp, simbins, bins);
+#elif defined(USE_OMPGPU)
+  CaloGpuGeneral_omp::load_hitsim_params(rd4h, hp, simbins, bins);
 #else
   CaloGpuGeneral_cu::load_hitsim_params(rd4h, hp, simbins, bins);
 #endif

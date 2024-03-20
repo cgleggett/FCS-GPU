@@ -5,6 +5,7 @@
 #ifndef HIT_G_H
 #define HIT_G_H
 
+#include <cmath>
 #include "HostDevDef.h"
 
 class Hit {

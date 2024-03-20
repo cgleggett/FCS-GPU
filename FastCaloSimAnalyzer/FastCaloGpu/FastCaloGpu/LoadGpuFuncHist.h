@@ -10,6 +10,9 @@
 #ifdef USE_KOKKOS
 #include "FH_views.h"
 #endif
+#ifdef USE_OMPGPU
+#include <omp.h>
+#endif
 
 class LoadGpuFuncHist {
 
@@ -75,6 +78,11 @@ private:
   Impl* pImpl;
 #endif
 
+#ifdef USE_OMPGPU
+  int m_default_device = omp_get_default_device();
+  int m_initial_device = omp_get_initial_device();
+  std::size_t m_offset = 0;
+#endif
 };
 
 #endif

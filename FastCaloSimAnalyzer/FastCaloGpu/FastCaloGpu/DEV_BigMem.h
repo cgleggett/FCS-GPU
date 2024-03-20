@@ -12,6 +12,10 @@
 #include "AlpakaDefs.h"
 #endif
 
+#ifdef USE_OMPGPU
+#include <omp.h>
+#endif
+
 class DEV_BigMem {
 
 public:
@@ -56,6 +60,12 @@ private:
 
 #ifdef USE_ALPAKA
   std::vector<BufAccChar> m_bufs;
+#endif
+
+#ifdef USE_OMPGPU
+  int m_default_device = omp_get_default_device();
+  int m_initial_device = omp_get_initial_device();
+  std::size_t m_offset = 0;
 #endif
 };
 

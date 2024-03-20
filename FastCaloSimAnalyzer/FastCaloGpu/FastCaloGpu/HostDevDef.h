@@ -33,6 +33,11 @@
 #define __HOST__
 #define __HOSTDEV__
 #define __INLINE__ inline
+#elif defined(USE_OMPGPU)
+#define __DEVICE__  inline
+#define __HOST__    inline
+#define __HOSTDEV__ inline
+#define __INLINE__  inline
 #else
 #define __DEVICE__ ERROR
 #define __HOST__ ERROR

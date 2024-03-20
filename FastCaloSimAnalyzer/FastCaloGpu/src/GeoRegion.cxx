@@ -4,6 +4,7 @@
 
 #include "GeoRegion.h"
 #include <iostream>
+#include <algorithm>
 
 #define PI 3.14159265358979323846
 #define TWOPI 2 * 3.14159265358979323846
@@ -49,6 +50,9 @@ GeoRegion::calculate_distance_eta_phi(const long long DDE, float eta, float phi,
   using std::max;
 #endif
 #ifdef USE_ALPAKA
+  using std::max;
+#endif
+#ifdef USE_OMPGPU
   using std::max;
 #endif
   dist_eta0 = (eta - m_all_cells[DDE].eta()) / m_deta_double;

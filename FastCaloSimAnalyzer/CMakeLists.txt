@@ -13,6 +13,7 @@ cmake_policy(SET CMP0074 NEW)
 project(FastCaloSimAnalyzer VERSION 1.0.0)
 
 set(ENABLE_GPU OFF CACHE BOOL "Enable GPU")
+set(ENABLE_OMPGPU OFF CACHE BOOL "Enable OMPTARGET GPU")
 set(USE_STDPAR OFF CACHE BOOL "Use std::par")
 set(STDPAR_TARGET "gpu" CACHE STRING "target for std::par. should be gpu,multicore or cpu")
 set(DUMP_HITCELLS OFF CACHE BOOL "printout hit cell contents")

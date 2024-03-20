@@ -78,6 +78,7 @@ public:
   bool LoadGpu_cu();
   bool LoadGpu_sp();
   bool LoadGpu_al();
+  bool LoadGpu_omp();
 
   void set_geoPtr(GeoGpu *ptr) { m_geo_d = ptr; }
   GeoGpu *get_geoPtr() const { return m_geo_d; }

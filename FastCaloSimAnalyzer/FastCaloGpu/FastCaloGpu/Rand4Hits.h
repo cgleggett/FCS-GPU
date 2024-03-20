@@ -21,6 +21,10 @@
 #include "AlpakaDefs.h"
 #endif
 
+#ifdef USE_OMPGPU
+#include <omp.h>
+#endif
+
 #include "GpuGeneral_structs.h"
 
 class Rand4Hits {
@@ -204,6 +208,14 @@ private:
   BufAccHitParams m_hitParams;
 #endif
 
+#ifdef USE_OMPGPU
+  int m_default_device = omp_get_default_device();
+  int m_initial_device = omp_get_initial_device();
+  std::size_t m_offset = 0;
+  //const char *env_var = "OMP_TARGET_OFFLOAD";
+  //std::string offload_var = std::getenv (env_var);
+  int m_select_device = m_default_device;
+#endif
 };
 
 #endif

@@ -23,12 +23,30 @@ if(FIND_CUDA)
   set(CUDA_LIBRARIES PUBLIC ${CUDA_LIBRARIES})
 endif()
 
+# Add OpenMP
+if(ENABLE_OMPGPU)
+  find_package(OpenMP)
+  if(OPENMP_FOUND)
+  	set(OpenMP_OPT_FLAGS "${OpenMP_OPT_FLAGS} -fopenmp-cuda-mode")
+  	set(OpenMP_OPT_FLAGS "${OpenMP_OPT_FLAGS} -foffload-lto")
+  	set(OpenMP_OPT_FLAGS "${OpenMP_OPT_FLAGS} -fopenmp-assume-no-thread-state")
+  	set(OpenMP_OPT_RMRKS "-Rpass=openmp-opt -Rpass-analysis=openmp-opt -Rpass-missed=openmp-opt " )
+  	set(OpenMP_FLAGS "-fopenmp --offload-arch=sm_86 -lomp") ## nvidia
+  	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_FLAGS} ${OpenMP_OPT_FLAGS} ${OpenMP_OPT_RMRKS}")
+  	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_FLAGS} ${OpenMP_OPT_FLAGS} ${OpenMP_OPT_RMRKS}")
+  else()
+    message(WARNING "Configuring with OpenMP GPU but OpenMP is not found!")
+  endif()
+endif()
+
 # Sources
 
 if(USE_STDPAR)
   set(FastCaloGpu_Srcs GeoLoadGpu.cxx KernelWrapper_sp.cxx gpuQ.cu Rand4Hits.cu Rand4Hits_sp.cxx )
 elseif(USE_KOKKOS)
   set(FastCaloGpu_Srcs GeoLoadGpu.cxx KernelWrapper_kk.cxx DEV_BigMem_kk.cxx)
+elseif(ENABLE_OMPGPU)
+  set(FastCaloGpu_Srcs KernelWrapper_omp.cxx gpuQ.cxx CaloGpuGeneral.cxx DEV_BigMem_omp.cxx )
 elseif(USE_ALPAKA)
   set(FastCaloGpu_Srcs CaloGpuGeneral.cxx KernelWrapper_al.cxx Rand4Hits_al.cxx )
 else()
@@ -106,6 +124,11 @@ endif()
 # FastCaloGpu library via HostDevDef.h
 if(USE_ALPAKA)
   target_compile_definitions(${FastCaloGpu_LIB} PRIVATE -DALPAKA_LOCAL )
+endif()
+
+if(ENABLE_OMPGPU)
+  target_compile_definitions(${FastCaloGpu_LIB} PRIVATE -DUSE_OMPGPU )
+  target_link_libraries(${FastCaloGpu_LIB} PUBLIC  ${CUDA_LIBRARIES} )
 endif()
 
 # Install library

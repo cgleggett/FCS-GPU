@@ -12,6 +12,8 @@ bool GeoLoadGpu::LoadGpu() {
   return LoadGpu_kk();
 #elif defined(USE_ALPAKA)
   return LoadGpu_al();
+#elif defined(USE_OMPGPU)
+  return LoadGpu_omp();
 #else
   return LoadGpu_cu();
 #endif
